@@ -1,0 +1,8 @@
+<h1>Student Dashboard</h1>
+<p>Welcome {{ request.user.username }}</p>
+<a href="{% url 'logout' %}">Logout</a>
+<ul>
+  <li>Enroll in Course</li>
+  <li>Submit Assignment</li>
+  <li>Ask Doubts</li>
+</ul>
