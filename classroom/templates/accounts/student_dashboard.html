@@ -1,8 +1,21 @@
 <h1>Student Dashboard</h1>
 <p>Welcome {{ request.user.username }}</p>
 <a href="{% url 'logout' %}">Logout</a>
+<h3>My Courses</h3>
+
 <ul>
-  <li>Enroll in Course</li>
-  <li>Submit Assignment</li>
-  <li>Ask Doubts</li>
+  {% for enroll in enrollments %}
+    <li>
+      <strong>{{ enroll.course.name }}</strong><br>
+      Subject: {{ enroll.course.subject }}<br>
+      Code: {{ enroll.course.course_code }}
+      <a href="{% url 'view_materials' enroll.course.id %}">View Materials</a>
+    
+    </li>
+    <hr>
+  {% empty %}
+    <li>No courses joined yet.</li>
+  {% endfor %}
 </ul>
+
+<a href="{% url 'join_course' %}">Join a new course</a>

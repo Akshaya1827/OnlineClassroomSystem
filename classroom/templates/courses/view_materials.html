@@ -1,0 +1,12 @@
+<h2>Course Materials - {{ course.name }}</h2>
+
+<ul>
+    {% for material in materials %}
+        <li>
+            {{ material.title }} -
+            <a href="{{ material.file.url }}" target="_blank">View / Download</a>
+        </li>
+    {% empty %}
+        <li>No materials uploaded yet.</li>
+    {% endfor %}
+</ul>

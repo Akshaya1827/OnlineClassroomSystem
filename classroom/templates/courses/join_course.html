@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Join Course</title>
+</head>
+<body>
+
+<h2>Join a Course</h2>
+
+<form method="POST" action="{% url 'join_course' %}">
+    {% csrf_token %}
+
+    <label>Course Code:</label><br>
+    <input type="text" name="course_code" required><br><br>
+
+    <button type="submit">Join</button>
+</form>
+
+</body>
+</html>

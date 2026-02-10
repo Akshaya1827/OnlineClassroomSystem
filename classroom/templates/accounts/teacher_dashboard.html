@@ -1,8 +1,21 @@
 <h1>Teacher Dashboard</h1>
 <p>Welcome {{ request.user.username }}</p>
 <a href="{% url 'logout' %}">Logout</a>
+<h2>My Courses</h2>
+
 <ul>
-  <li>Create Course</li>
-  <li>Upload Assignment</li>
-  <li>View Doubts</li>
+  {% for course in courses %}
+    <li>
+      <strong>Course Name:</strong> {{ course.course_name }} <br>
+      <strong>Subject:</strong> {{ course.subject }} <br>
+      <strong>Course Code:</strong> {{ course.course_code }}
+      <a href="{% url 'upload_material' course.id %}">Upload Material</a>
+      <a href="{% url 'view_materials' course.id %}">View Materials</a>
+    
+    </li>
+    <hr>
+  {% empty %}
+    <li>No courses created yet.</li>
+  {% endfor %}
 </ul>
+
