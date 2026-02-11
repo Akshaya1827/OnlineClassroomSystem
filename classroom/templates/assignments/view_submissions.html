@@ -1,0 +1,17 @@
+<h2>
+Submissions - {{ assignment.title }}
+({{ total }} Submitted)
+</h2>
+{% if submissions %}
+    {% for submission in submissions %}
+        <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+            <p><b>Student:</b> {{ submission.student.email }}</p>
+            <p><b>Submitted at:</b> {{ submission.submitted_at }}</p>
+            <a href="{{ submission.file.url }}" target="_blank">
+                Download File
+            </a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No submissions yet.</p>
+{% endif %}

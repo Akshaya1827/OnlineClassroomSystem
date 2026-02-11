@@ -1,0 +1,25 @@
+<h2>Submit: {{ assignment.title }}</h2>
+
+{% if assignment.due_date %}
+    <p><b>Due Date:</b> {{ assignment.due_date }}</p>
+{% else %}
+    <p><b>No Due Date</b></p>
+{% endif %}
+
+{% if is_closed %}
+    <p style="color: red;"><b>Submission Closed. Deadline has passed.</b></p>
+{% else %}
+
+    {% if existing_submission %}
+        <p style="color: green;">
+            You already submitted. Uploading again will replace previous file.
+        </p>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+{% endif %}

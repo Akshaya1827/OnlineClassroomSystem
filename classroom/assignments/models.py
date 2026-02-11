@@ -1,15 +1,32 @@
 from django.db import models
-from courses.models import Course
+from django.utils import timezone
 from accounts.models import User
+from courses.models import Course
 
 class Assignment(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
     description = models.TextField()
-    due_date = models.DateTimeField()
-    file = models.FileField(upload_to='assignments/')
+    due_date = models.DateTimeField(null=True, blank=True)  # optional
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def is_overdue(self):
+        if self.due_date:
+            return timezone.now() > self.due_date
+        return False
+
+    def __str__(self):
+        return self.title
+
+
 class Submission(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
-    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    student = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'student'})
     file = models.FileField(upload_to='submissions/')
     submitted_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('assignment', 'student')
+
+    def __str__(self):
+        return f"{self.student.email} - {self.assignment.title}"
