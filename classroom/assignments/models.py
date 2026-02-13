@@ -24,7 +24,7 @@ class Submission(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'student'})
     file = models.FileField(upload_to='submissions/')
     submitted_at = models.DateTimeField(auto_now_add=True)
-
+    score = models.FloatField(default=0)
     class Meta:
         unique_together = ('assignment', 'student')
 

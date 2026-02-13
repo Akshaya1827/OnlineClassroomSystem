@@ -23,6 +23,8 @@ urlpatterns = [
     path('accounts/',include('accounts.urls')),
     path('courses/',include('courses.urls')),
     path('assignments/', include('assignments.urls')),
+    path('leaderboard/', include('leaderboard.urls')),
+
 
 ]
 if settings.DEBUG:

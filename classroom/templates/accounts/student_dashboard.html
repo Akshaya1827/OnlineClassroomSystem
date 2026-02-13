@@ -11,6 +11,7 @@
       Code: {{ enroll.course.course_code }}
       <a href="{% url 'view_materials' enroll.course.id %}">View Materials</a>
       <a href="{% url 'assignment_list' enroll.course.id %}">View Assignments</a>
+      <a href="{% url 'leaderboard' enroll.course.id %}">View Leaderboard</a>
     </li>
     <hr>
   {% empty %}

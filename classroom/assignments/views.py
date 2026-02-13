@@ -55,27 +55,42 @@ def submit_assignment(request, assignment_id):
 
     if request.user.role != 'student':
         return redirect('teacher_dashboard')
-
-    is_closed = False
-    if assignment.due_date and timezone.now() > assignment.due_date:
-        is_closed = True
-
     existing_submission = Submission.objects.filter(
         assignment=assignment,
         student=request.user
     ).first()
 
+    is_closed = False
+    if assignment.due_date and timezone.now() > assignment.due_date:
+        is_closed = True
+
     if request.method == 'POST' and not is_closed:
         form = SubmissionForm(request.POST, request.FILES)
+
         if form.is_valid():
+
+            # 🔹 Calculate score here (ONLY when submitting)
+            if assignment.due_date:
+                total_time = (assignment.due_date - assignment.created_at).total_seconds()
+                remaining_time = (assignment.due_date - timezone.now()).total_seconds()
+
+                if remaining_time < 0:
+                    remaining_time = 0
+
+                score = (remaining_time / total_time) * 100
+            else:
+                score = 100
+
             if existing_submission:
                 existing_submission.file = form.cleaned_data['file']
+                existing_submission.score = round(score, 2)
                 existing_submission.save()
                 messages.success(request, "Assignment updated successfully!")
             else:
                 submission = form.save(commit=False)
                 submission.assignment = assignment
                 submission.student = request.user
+                submission.score = round(score, 2)
                 submission.save()
                 messages.success(request, "Assignment submitted successfully!")
 
