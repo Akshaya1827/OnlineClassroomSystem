@@ -1,7 +1,7 @@
 <h2>Assignments - {{ course.name }}</h2>
 
 {% for assignment in assignments %}
-<div style="border:1px solid #ccc; padding:10px; margin:10px;">
+<div style="border:1px solid ; padding:10px; margin:10px;">
 
     <h3>{{ assignment.title }}</h3>
     <p>{{ assignment.description }}</p>
@@ -19,7 +19,7 @@
 
         {% for sub in submissions %}
             {% if sub.assignment.id == assignment.id %}
-                <p style="color:green;"><b>✔ Submitted</b></p>
+                <p style="color:green;"><b>Submitted</b></p>
             {% endif %}
         {% endfor %}
 
