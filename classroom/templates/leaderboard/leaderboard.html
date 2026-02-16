@@ -21,14 +21,14 @@
             {% endif %}
         </td>
 
-        <td>{{ student.student__username }}</td>
+        <td>{{ student.student.username }}</td>
         <td>{{ student.total_score }}</td>
     </tr>
     {% empty %}
     <tr>
         <td colspan="3">No submissions yet.</td>
     </tr>
-    <tr {% if student.student__username == request.user.username %} style="background-color:#d4edda;" {% endif %}>
+    <tr {% if student.student.username == request.user.username %} style="background-color:#d4edda;" {% endif %}>
 
     {% endfor %}
 </table>

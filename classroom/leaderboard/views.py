@@ -3,25 +3,38 @@ from django.contrib.auth.decorators import login_required
 from assignments.models import Assignment, Submission
 from django.db.models import Sum
 from courses.models import Course
+from .models import Leaderboard
 @login_required
 def leaderboard(request, course_id):
     course = get_object_or_404(Course, id=course_id)
 
-    # Allow only student and teacher
     if request.user.role not in ['student', 'teacher']:
         return redirect('login')
 
-    # Get all assignments of this course
-    assignments = Assignment.objects.filter(course=course)
+    # Delete old leaderboard entries for this course
+    Leaderboard.objects.filter(course=course).delete()
 
     # Aggregate total score per student
-    leaderboard = (
+    totals = (
         Submission.objects
-        .filter(assignment__in=assignments)
-        .values('student__id', 'student__username')
+        .filter(assignment__course=course)
+        .values('student__id')
         .annotate(total_score=Sum('score'))
         .order_by('-total_score')
     )
+
+    rank = 1
+    for entry in totals:
+        Leaderboard.objects.create(
+            course=course,
+            student_id=entry['student__id'],
+            total_score=entry['total_score'],
+            rank=rank
+        )
+        rank += 1
+
+    # Fetch stored leaderboard
+    leaderboard = Leaderboard.objects.filter(course=course).order_by('rank')
 
     return render(request, 'leaderboard/leaderboard.html', {
         'course': course,
