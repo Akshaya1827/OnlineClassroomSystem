@@ -10,7 +10,11 @@
 
     <h3>{{ assignment.title }}</h3>
     <p>{{ assignment.description }}</p>
-
+{% if assignment.document %}
+                <a href="{{ assignment.document.url }}" target="_blank">
+                    Download File
+                </a>
+            {% endif %}
     {% if assignment.due_date %}
         <p><b>Due:</b> {{ assignment.due_date }}</p>
     {% else %}

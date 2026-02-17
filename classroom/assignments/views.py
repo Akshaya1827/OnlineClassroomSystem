@@ -15,7 +15,7 @@ def create_assignment(request, course_id):
         return redirect('student_dashboard')
 
     if request.method == 'POST':
-        form = AssignmentForm(request.POST)
+        form = AssignmentForm(request.POST,request.FILES)
         if form.is_valid():
             assignment = form.save(commit=False)
             assignment.course = course

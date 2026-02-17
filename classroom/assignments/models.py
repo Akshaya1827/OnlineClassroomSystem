@@ -7,6 +7,11 @@ class Assignment(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField()
+    document = models.FileField(
+        upload_to="assignments/",
+        blank=True,
+        null=True
+    )
     due_date = models.DateTimeField(null=True, blank=True)  # optional
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -16,7 +21,7 @@ class Assignment(models.Model):
         return False
 
     def __str__(self):
-        return self.title
+        return f"{self.title} - {self.course.name}"
 
 
 class Submission(models.Model):
