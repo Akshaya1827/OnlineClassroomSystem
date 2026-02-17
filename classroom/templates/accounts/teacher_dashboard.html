@@ -1,3 +1,9 @@
+
+{% extends 'layout.html' %}
+
+{% block title %}Teacher Dashboard{% endblock %}
+
+{% block content %}
 <h1>Teacher Dashboard</h1>
 <p>Welcome {{ request.user.username }}</p>
 <a href="{% url 'logout' %}">Logout</a>
@@ -6,24 +12,30 @@
 
 <ul>
   {% for course in courses %}
-  <div style="border:1px solid #ccc; padding:15px; margin:10px;">
-    <li>
-      <strong>Course Name:</strong> {{ course.course_name }} <br>
+  <li style="border:1px solid #ccc; padding:15px; margin:10px; list-style:none;">
+      
+      <strong>Course Name:</strong> {{ course.name }} <br>
       <strong>Subject:</strong> {{ course.subject }} <br>
-      <strong>Course Code:</strong> {{ course.course_code }}
-      <a href="{% url 'upload_material' course.id %}">Upload Material</a>
-      <a href="{% url 'view_materials' course.id %}">View Materials</a>
-      <a href="{% url 'create_assignment' course.id %}">Create Assignment</a>
-      <a href="{% url 'assignment_list' course.id %}">
-        View Assignments
-    </a>
-    <a href="{% url 'leaderboard' course.id %}">
-        View Leaderboard
-    </li>
-    <hr>
+      <strong>Course Code:</strong> {{ course.course_code }} <br>
+      
+      <a href="{% url 'course_detail' course.id %}">View Details</a>
+      <strong>Enrolled Students:</strong> {{ course.student_count }}
+      
+      <br><br>
+
+      <a href="{% url 'update_course' course.id %}">Edit</a> |
+      <a href="{% url 'delete_course' course.id %}">Delete</a> |
+      <a href="{% url 'upload_material' course.id %}">Upload Material</a> |
+      <a href="{% url 'view_materials' course.id %}">View Materials</a> |
+      <a href="{% url 'create_assignment' course.id %}">Create Assignment</a> |
+      <a href="{% url 'assignment_list' course.id %}">View Assignments</a> |
+      <a href="{% url 'leaderboard' course.id %}">View Leaderboard</a>
+
+  </li>
   {% empty %}
-    <li>No courses created yet.</li>
-  </div>
+  <li>No courses created yet.</li>
   {% endfor %}
 </ul>
 
+
+{% endblock %}

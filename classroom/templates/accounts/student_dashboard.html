@@ -1,17 +1,24 @@
+
+{% extends 'layout.html' %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
 <h1>Student Dashboard</h1>
 <p>Welcome {{ request.user.username }}</p>
 <a href="{% url 'logout' %}">Logout</a>
 <h3>My Courses</h3>
 
 <ul>
-  {% for enroll in enrollments %}
+  {% for course in courses %}
     <li>
-      <strong>{{ enroll.course.name }}</strong><br>
-      Subject: {{ enroll.course.subject }}<br>
-      Code: {{ enroll.course.course_code }}
-      <a href="{% url 'view_materials' enroll.course.id %}">View Materials</a>
-      <a href="{% url 'assignment_list' enroll.course.id %}">View Assignments</a>
-      <a href="{% url 'leaderboard' enroll.course.id %}">View Leaderboard</a>
+      <strong>{{ course.name }}</strong><br>
+      Subject: {{ course.subject }}<br>
+      Code: {{ course.course_code }}
+
+      <a href="{% url 'view_materials' course.id %}">View Materials</a>
+      <a href="{% url 'assignment_list' course.id %}">View Assignments</a>
+      <a href="{% url 'leaderboard' course.id %}">View Leaderboard</a>
     </li>
     <hr>
   {% empty %}
@@ -20,3 +27,4 @@
 </ul>
 
 <a href="{% url 'join_course' %}">Join a new course</a>
+{% endblock %}

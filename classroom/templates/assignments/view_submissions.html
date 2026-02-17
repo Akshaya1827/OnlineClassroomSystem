@@ -1,3 +1,8 @@
+{% extends 'layout.html' %}
+
+{% block title %}View Submissions{% endblock %}
+
+{% block content %}
 <h2>
 Submissions - {{ assignment.title }}
 ({{ total }} Submitted)
@@ -15,3 +20,4 @@ Submissions - {{ assignment.title }}
 {% else %}
     <p>No submissions yet.</p>
 {% endif %}
+{% endblock %}
