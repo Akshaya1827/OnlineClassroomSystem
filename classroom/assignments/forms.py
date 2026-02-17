@@ -9,7 +9,7 @@ class AssignmentForm(forms.ModelForm):
 
     class Meta:
         model = Assignment
-        fields = ['title', 'description', 'due_date', "document"]
+        fields = ['title', 'description', 'due_date']
 
 
 class SubmissionForm(forms.ModelForm):

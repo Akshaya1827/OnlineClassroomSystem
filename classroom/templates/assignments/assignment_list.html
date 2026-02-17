@@ -4,17 +4,21 @@
 
 {% block content %}
 <h2>Assignments - {{ course.name }}</h2>
-
 {% for assignment in assignments %}
 <div style="border:1px solid ; padding:10px; margin:10px;">
 
     <h3>{{ assignment.title }}</h3>
     <p>{{ assignment.description }}</p>
-{% if assignment.document %}
-                <a href="{{ assignment.document.url }}" target="_blank">
-                    Download File
-                </a>
-            {% endif %}
+
+    <h4>Files:</h4>
+    {% for file in assignment.files.all %}
+        <a href="{{ file.file.url }}" target="_blank">
+            Download File
+        </a><br>
+    {% empty %}
+        <p>No files uploaded.</p>
+    {% endfor %}
+
     {% if assignment.due_date %}
         <p><b>Due:</b> {{ assignment.due_date }}</p>
     {% else %}
@@ -22,9 +26,6 @@
     {% endif %}
 
     {% if user.role == 'student' %}
-
-        {% with submissions|dictsort:"assignment_id" as sorted_submissions %}
-        {% endwith %}
 
         {% for sub in submissions %}
             {% if sub.assignment.id == assignment.id %}
@@ -46,4 +47,5 @@
 
 </div>
 {% endfor %}
+
 {% endblock %}

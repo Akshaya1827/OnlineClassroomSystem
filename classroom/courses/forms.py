@@ -21,4 +21,4 @@ class JoinCourseForm(forms.Form):
 class CourseMaterialForm(forms.ModelForm):
     class Meta:
         model = CourseMaterial
-        fields = ['title', 'file']
+        fields = ['title', 'description']

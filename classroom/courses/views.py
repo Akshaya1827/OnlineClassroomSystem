@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import CourseForm, JoinCourseForm, CourseMaterialForm
-from .models import Course, Enrollment, CourseMaterial
+from .models import Course, Enrollment, CourseMaterial, MaterialFile
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.db.models import Count
@@ -137,7 +137,14 @@ def upload_material(request, course_id):
             material = form.save(commit=False)
             material.course = course
             material.save()
-            return redirect('teacher_dashboard')
+            files = request.FILES.getlist("files")
+
+            for f in files:
+                MaterialFile.objects.create(
+                    material=material,
+                    file=f
+                )
+            return redirect('view_materials', course_id=course.id)
     else:
         form = CourseMaterialForm()
 

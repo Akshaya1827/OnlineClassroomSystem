@@ -8,6 +8,11 @@
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+
+    <label>Upload Files</label>
+    <input type="file" name="files" multiple>
+
     <button type="submit">Upload</button>
 </form>
+
 {% endblock %}

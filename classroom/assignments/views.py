@@ -1,7 +1,8 @@
+from importlib.resources import files
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Assignment, Submission
+from .models import Assignment, AssignmentFile, Submission
 from .forms import AssignmentForm, SubmissionForm
 from courses.models import Course
 from django.utils import timezone
@@ -16,10 +17,18 @@ def create_assignment(request, course_id):
 
     if request.method == 'POST':
         form = AssignmentForm(request.POST,request.FILES)
+        
         if form.is_valid():
             assignment = form.save(commit=False)
             assignment.course = course
             assignment.save()
+            files = request.FILES.getlist("files")
+            for f in files:
+                AssignmentFile.objects.create(
+                    assignment=assignment,
+                    file=f
+                )
+
             messages.success(request, "Assignment created successfully!")
             return redirect('teacher_dashboard')
     else:
