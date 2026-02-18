@@ -168,3 +168,37 @@ def course_detail(request, course_id):
     return render(request, "courses/course_detail.html", {
         "course": course
     })
+
+@login_required
+def delete_material_file(request, file_id):
+    file = MaterialFile.objects.get(id=file_id)
+
+    if request.user != file.material.course.teacher:
+        messages.error(request, "Permission denied.")
+        return redirect("teacher_dashboard")
+
+    course_id = file.material.course.id
+
+    if request.method == "POST":
+        file.delete()
+        return redirect("view_materials", course_id=course_id)
+
+@login_required
+def update_material_file(request, file_id):
+    file = MaterialFile.objects.get(id=file_id)
+
+    if request.user != file.material.course.teacher:
+        messages.error(request, "Permission denied.")
+        return redirect("teacher_dashboard")
+
+    if request.method == "POST":
+        new_file = request.FILES.get("file")
+        if new_file:
+            file.file = new_file
+            file.save()
+        return redirect("view_materials", course_id=file.material.course.id)
+
+    return render(request, "courses/update_material_file.html", {
+        "file": file
+    })
+

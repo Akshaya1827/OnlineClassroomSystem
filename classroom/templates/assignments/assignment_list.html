@@ -4,6 +4,7 @@
 
 {% block content %}
 <h2>Assignments - {{ course.name }}</h2>
+
 {% for assignment in assignments %}
 <div style="border:1px solid ; padding:10px; margin:10px;">
 
@@ -11,10 +12,17 @@
     <p>{{ assignment.description }}</p>
 
     <h4>Files:</h4>
+
     {% for file in assignment.files.all %}
-        <a href="{{ file.file.url }}" target="_blank">
-            Download File
-        </a><br>
+        {% with file.file.name as full_name %}
+        {% with full_name|cut:"materials/" as clean_name %}
+            <a href="{{ file.file.url }}" target="_blank">
+                {{ clean_name }}
+            </a>
+        {% endwith %}
+        {% endwith %}
+
+        <br>
     {% empty %}
         <p>No files uploaded.</p>
     {% endfor %}
@@ -26,7 +34,6 @@
     {% endif %}
 
     {% if user.role == 'student' %}
-
         {% for sub in submissions %}
             {% if sub.assignment.id == assignment.id %}
                 <p style="color:green;"><b>Submitted</b></p>
@@ -36,10 +43,11 @@
         <a href="{% url 'submit_assignment' assignment.id %}">
             Submit
         </a>
-
     {% endif %}
 
     {% if user.role == 'teacher' %}
+        <a href="{% url 'update_assignment' assignment.id %}">Update</a>
+         <a href="{% url 'delete_assignment' assignment.id %}">Delete Assignment</a>
         <a href="{% url 'view_submissions' assignment.id %}">
             View Submissions
         </a>

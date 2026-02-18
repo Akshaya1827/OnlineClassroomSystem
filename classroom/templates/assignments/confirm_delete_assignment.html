@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Assignment</title>
+</head>
+<body>
+
+    <h2>Delete Assignment</h2>
+
+    <p>Are you sure you want to delete the assignment:</p>
+
+    <h3>{{ assignment.title }}</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Yes, Delete</button>
+        <a href="{% url 'assignment_list' assignment.course.id %}">
+            Cancel
+        </a>
+    </form>
+
+</body>
+</html>

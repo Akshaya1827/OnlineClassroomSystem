@@ -129,3 +129,100 @@ def view_submissions(request, assignment_id):
         'submissions': submissions,
         'total': total
     })
+
+@login_required
+def delete_assignment(request, assignment_id):
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+
+    if request.user != assignment.course.teacher:
+        messages.error(request, "You are not allowed to delete this assignment.")
+        return redirect('teacher_dashboard')
+
+    if request.method == "POST":
+        course_id = assignment.course.id
+        assignment.delete()
+        messages.success(request, "Assignment deleted successfully.")
+        return redirect('assignment_list', course_id=course_id)
+
+
+    return render(request, 'assignments/confirm_delete_assignment.html', {
+        'assignment': assignment
+    })
+@login_required
+def update_assignment(request, assignment_id):
+    assignment = Assignment.objects.get(id=assignment_id)
+
+    if request.user != assignment.course.teacher:
+        messages.error(request, "Only teacher can update assignment.")
+        return redirect('teacher_dashboard')
+
+    if request.method == "POST":
+        form = AssignmentForm(request.POST, request.FILES, instance=assignment)
+
+        if form.is_valid():
+            form.save()
+
+            # If new file uploaded, replace old file
+            new_file = request.FILES.get("file")
+            if new_file:
+                # Delete old files
+                AssignmentFile.objects.filter(assignment=assignment).delete()
+
+                # Save new file
+                AssignmentFile.objects.create(
+                    assignment=assignment,
+                    file=new_file
+                )
+
+            return redirect('teacher_dashboard')
+    else:
+        form = AssignmentForm(instance=assignment)
+
+    return render(request, "assignments/update_assignment.html", {
+        "form": form,
+        "assignment": assignment
+    })
+
+
+@login_required
+def delete_submission(request, submission_id):
+    submission = Submission.objects.get(id=submission_id)
+    assignment = submission.assignment
+
+    if request.user != submission.student:
+        messages.error(request, "Permission denied.")
+        return redirect("student_dashboard")
+
+    if assignment.due_date and timezone.now() > assignment.due_date:
+        messages.error(request, "Cannot delete after due date.")
+        return redirect("assignment_list", course_id=assignment.course.id)
+
+    if request.method == "POST":
+        submission.delete()
+
+    return redirect("assignment_list", course_id=assignment.course.id)
+
+@login_required
+def update_submission(request, submission_id):
+    submission = Submission.objects.get(id=submission_id)
+    assignment = submission.assignment
+
+    if request.user != submission.student:
+        messages.error(request, "Permission denied.")
+        return redirect("student_dashboard")
+
+    if assignment.due_date and timezone.now() > assignment.due_date:
+        messages.error(request, "Cannot update after due date.")
+        return redirect("assignment_list", course_id=assignment.course.id)
+
+    if request.method == "POST":
+        new_file = request.FILES.get("file")
+        if new_file:
+            submission.file = new_file
+            submission.save()
+
+        return redirect("assignment_list", course_id=assignment.course.id)
+
+    return render(request, "assignments/update_submission.html", {
+        "submission": submission
+    })

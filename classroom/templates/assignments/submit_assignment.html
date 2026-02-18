@@ -10,6 +10,18 @@
 {% else %}
     <p><b>No Due Date</b></p>
 {% endif %}
+{% if sub.assignment.id == assignment.id %}
+    <p style="color:green;"><b>Submitted</b></p>
+
+    {% if assignment.due_date and assignment.due_date > now %}
+        <a href="{% url 'update_submission' sub.id %}">Update</a>
+
+        <form method="POST" action="{% url 'delete_submission' sub.id %}">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+        </form>
+    {% endif %}
+{% endif %}
 
 {% if is_closed %}
     <p style="color: red;"><b>Submission Closed. Deadline has passed.</b></p>
