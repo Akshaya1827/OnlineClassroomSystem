@@ -29,7 +29,8 @@
       <a href="{% url 'view_materials' course.id %}">View Materials</a> |
       <a href="{% url 'create_assignment' course.id %}">Create Assignment</a> |
       <a href="{% url 'assignment_list' course.id %}">View Assignments</a> |
-      <a href="{% url 'leaderboard' course.id %}">View Leaderboard</a>
+      <a href="{% url 'leaderboard' course.id %}">View Leaderboard</a> |
+      <a href="{% url 'doubt_box' course.id %}">Doubt Box</a>
 
   </li>
   {% empty %}

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from discussions.views import doubt_box
 urlpatterns = [
     path('create-course/', views.create_course, name='create_course'),
     path('teacher-dashboard/', views.teacher_dashboard, name='teacher_dashboard'),
@@ -14,5 +14,6 @@ urlpatterns = [
     path("course/<int:course_id>/", views.course_detail, name="course_detail"),
     path('material/file/delete/<int:file_id>/', views.delete_material_file, name='delete_material_file'),
 path('material/file/update/<int:file_id>/', views.update_material_file, name='update_material_file'),
+path('course/<int:course_id>/doubts/', doubt_box, name='doubt_box'),
 
 ]

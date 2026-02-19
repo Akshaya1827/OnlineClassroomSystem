@@ -4,3 +4,4 @@
 <p><strong>Course Code:</strong> {{ course.course_code }}</p>
 <p><strong>Description:</strong> {{ course.description }}</p>
 <a href="{% url 'teacher_dashboard' %}">Back to Dashboard</a>
+<a href="{% url 'doubt_box' course.id %}"> Open Doubt Box</a>

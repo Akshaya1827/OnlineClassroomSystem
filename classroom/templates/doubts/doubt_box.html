@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Doubt Box - {{ course.name }}</h2>
+
+<div style="border:1px solid black; padding:10px; height:300px; overflow-y:scroll;">
+
+    {% for msg in messages %}
+        <p>
+            <strong>{{ msg.sender.username }}</strong>
+            ({{ msg.timestamp|date:"d M Y H:i" }}):
+            <br>
+            {{ msg.message }}
+        </p>
+        <hr>
+    {% empty %}
+        <p>No doubts yet.</p>
+    {% endfor %}
+
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <textarea name="message" rows="3" required></textarea>
+    <br>
+    <button type="submit">Send</button>
+</form>
+
+{% endblock %}

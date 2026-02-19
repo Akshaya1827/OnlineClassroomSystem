@@ -22,6 +22,8 @@ from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
 
+
+
 urlpatterns = [
     # path('', RedirectView.as_view(pattern_name='accounts:login', permanent=False)),
     path('admin/', admin.site.urls),
@@ -29,6 +31,8 @@ urlpatterns = [
     path('courses/',include('courses.urls')),
     path('assignments/', include('assignments.urls')),
     path('leaderboard/', include('leaderboard.urls')),
+    
+
 
 
 ]
