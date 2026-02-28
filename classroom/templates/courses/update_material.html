@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Update Material</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <label>Add More Files:</label>
+    <input type="file" name="files" multiple>
+
+    <button type="submit">Update</button>
+</form>
+
+<hr>
+
+<h3>Existing Files</h3>
+
+{% for file in material.files.all %}
+    <p>
+        {{ file.file.name }}
+        <a href="{% url 'delete_material_file' file.id %}">Delete</a>
+    </p>
+{% empty %}
+    <p>No files uploaded.</p>
+{% endfor %}
+
+{% endblock %}

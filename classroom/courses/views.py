@@ -125,7 +125,7 @@ def student_dashboard(request):
 
 @login_required
 def upload_material(request, course_id):
-    course = Course.objects.get(id=course_id)
+    course = get_object_or_404(Course, id=course_id)
 
     if request.user != course.teacher:
         messages.error(request, "Only teacher can upload materials.")
@@ -144,6 +144,7 @@ def upload_material(request, course_id):
                     material=material,
                     file=f
                 )
+            messages.success(request, "Material uploaded successfully!")
             return redirect('view_materials', course_id=course.id)
     else:
         form = CourseMaterialForm()
@@ -153,7 +154,7 @@ def upload_material(request, course_id):
 
 @login_required
 def view_materials(request, course_id):
-    course = Course.objects.get(id=course_id)
+    course = get_object_or_404(Course, id=course_id)
     materials = course.materials.all()
     return render(request, 'courses/view_materials.html', {
         'course': course,
@@ -170,8 +171,8 @@ def course_detail(request, course_id):
     })
 
 @login_required
-def delete_material_file(request, file_id):
-    file = MaterialFile.objects.get(id=file_id)
+def delete_material_file(request,file_id):
+    file = get_object_or_404(MaterialFile, id=file_id)
 
     if request.user != file.material.course.teacher:
         messages.error(request, "Permission denied.")
@@ -181,24 +182,39 @@ def delete_material_file(request, file_id):
 
     if request.method == "POST":
         file.delete()
+        messages.success(request, "File deleted successfully!")
         return redirect("view_materials", course_id=course_id)
-
+    return render(request, "courses/confirm_delete_file.html", {
+        "file": file
+    })
 @login_required
-def update_material_file(request, file_id):
-    file = MaterialFile.objects.get(id=file_id)
+def update_material(request, material_id):
+    material = get_object_or_404(CourseMaterial, id=material_id)
 
-    if request.user != file.material.course.teacher:
+    if request.user != material.course.teacher:
         messages.error(request, "Permission denied.")
         return redirect("teacher_dashboard")
 
     if request.method == "POST":
-        new_file = request.FILES.get("file")
-        if new_file:
-            file.file = new_file
-            file.save()
-        return redirect("view_materials", course_id=file.material.course.id)
+        form = CourseMaterialForm(request.POST, instance=material)
 
-    return render(request, "courses/update_material_file.html", {
-        "file": file
+        if form.is_valid():
+            form.save()
+
+            # handle new uploaded files
+            files = request.FILES.getlist("files")
+            for f in files:
+                MaterialFile.objects.create(
+                    material=material,
+                    file=f
+                )
+
+            return redirect("view_materials", course_id=material.course.id)
+
+    else:
+        form = CourseMaterialForm(instance=material)
+
+    return render(request, "courses/update_material.html", {
+        "form": form,
+        "material": material
     })
-

@@ -6,20 +6,41 @@
 <h2>Course Materials - {{ course.name }}</h2>
 
 <ul>
-    {% for material in materials %}
+{% for material in materials %}
+
+<div class="material-card">
     <h3>{{ material.title }}</h3>
     <p>{{ material.description }}</p>
 
-    {% for file in material.files.all %}
-        <a href="{{ file.file.url }}" target="_blank">
-            Download
-        </a><br>
-        <a href="{% url 'update_material_file' file.id %}">Update</a>
-        <a href="{% url 'delete_material_file' file.id %}">Delete</a><br>
-    {% empty %}
+    <!-- FILES SECTION -->
+    {% if material.files.all %}
+        <ul>
+            {% for file in material.files.all %}
+                <li>
+                    <a href="{{ file.file.url }}">{{ file.file.name }}</a>
+                </li>
+                <li>
+                    <a href="{% url 'update_material' material.id %}">Edit</a>
+                </li>
+                <li>
+                    <a href="{% url 'delete_material_file' material.id %}">Delete File</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
         <p>No files</p>
-    {% endfor %}
-    <hr>
+    {% endif %}
+
+    <!-- ACTION BUTTONS (ALWAYS VISIBLE) -->
+    <div class="material-actions">
+        <a href="{% url 'update_material' material.id %}">Edit</a>
+        <a href="{% url 'delete_material_file' material.id %}">Delete</a>
+    </div>
+
+</div>
+
+<hr>
+
 {% endfor %}
 
 </ul>

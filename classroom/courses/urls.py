@@ -13,7 +13,8 @@ urlpatterns = [
     path("", views.course_list, name="course_list"),
     path("course/<int:course_id>/", views.course_detail, name="course_detail"),
     path('material/file/delete/<int:file_id>/', views.delete_material_file, name='delete_material_file'),
-path('material/file/update/<int:file_id>/', views.update_material_file, name='update_material_file'),
+
 path('course/<int:course_id>/doubts/', doubt_box, name='doubt_box'),
+path("material/update/<int:material_id>/", views.update_material, name="update_material"),
 
 ]
