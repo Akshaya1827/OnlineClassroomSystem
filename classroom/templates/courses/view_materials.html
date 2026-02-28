@@ -1,47 +1,39 @@
 {% extends 'layout.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Course Materials{% endblock %}
 
 {% block content %}
 <h2>Course Materials - {{ course.name }}</h2>
 
 <ul>
 {% for material in materials %}
-
-<div class="material-card">
+  <div class="material-block">
     <h3>{{ material.title }}</h3>
     <p>{{ material.description }}</p>
 
-    <!-- FILES SECTION -->
-    {% if material.files.all %}
-        <ul>
-            {% for file in material.files.all %}
-                <li>
-                    <a href="{{ file.file.url }}">{{ file.file.name }}</a>
-                </li>
-                <li>
-                    <a href="{% url 'update_material' material.id %}">Edit</a>
-                </li>
-                <li>
-                    <a href="{% url 'delete_material_file' material.id %}">Delete File</a>
-                </li>
-            {% endfor %}
-        </ul>
+    {% if material.files.exists %}
+      <ul>
+        {% for file in material.files.all %}
+      
+          <li>
+            <a href="{{ file.file.url }}">{{ file.file.name}}</a>
+           
+          </li>
+        {% endfor %}
+      </ul>
     {% else %}
-        <p>No files</p>
+      <p>No files</p>
     {% endif %}
 
-    <!-- ACTION BUTTONS (ALWAYS VISIBLE) -->
+    <!-- Material-level actions: one pair per material -->
+     {% if user == course.teacher %}
     <div class="material-actions">
-        <a href="{% url 'update_material' material.id %}">Edit</a>
-        <a href="{% url 'delete_material_file' material.id %}">Delete</a>
+      <a href="{% url 'update_material' material.id %}">Edit</a>
+      <a href="{% url 'delete_material' material.id %}">Delete</a>
     </div>
-
-</div>
-
-<hr>
-
+        {% endif %}
+  </div>
+  <hr>
 {% endfor %}
-
 </ul>
 {% endblock %}

@@ -16,5 +16,7 @@ urlpatterns = [
 
 path('course/<int:course_id>/doubts/', doubt_box, name='doubt_box'),
 path("material/update/<int:material_id>/", views.update_material, name="update_material"),
-
+path("material/delete/<int:material_id>/", 
+     views.delete_material, 
+     name="delete_material"),
 ]

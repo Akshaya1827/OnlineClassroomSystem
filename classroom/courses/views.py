@@ -218,3 +218,22 @@ def update_material(request, material_id):
         "form": form,
         "material": material
     })
+
+@login_required
+def delete_material(request, material_id):
+    material = get_object_or_404(CourseMaterial, id=material_id)
+
+    if request.user != material.course.teacher:
+        messages.error(request, "Permission denied.")
+        return redirect("teacher_dashboard")
+
+    course_id = material.course.id
+
+    if request.method == "POST":
+        material.delete()
+        messages.success(request, "Material deleted successfully!")
+        return redirect("view_materials", course_id=course_id)
+
+    return render(request, "courses/confirm_delete_material.html", {
+        "material": material
+    })
