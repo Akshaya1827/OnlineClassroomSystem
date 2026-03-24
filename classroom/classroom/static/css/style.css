@@ -1,0 +1,331 @@
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== BODY ===== */
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #1e272e, #2f3640);
+    color: #f5f6fa;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: #2f3640;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
+}
+
+.navbar h2 {
+    color: #00a8ff;
+}
+
+.navbar a {
+    margin-left: 15px;
+     color: #dcdde1;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: #00a8ff;
+}
+
+/* ===== MAIN LAYOUT ===== */
+.dashboard {
+    display: flex;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 220px;
+    background: #2f3640;
+    min-height: 100vh;
+    padding: 20px;
+    box-shadow: 2px 0px 5px rgba(0,0,0,0.05);
+}
+
+.sidebar h3 {
+    margin-bottom: 20px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    color: #dcdde1;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background: #353b48;
+    color: #00a8ff;
+}
+
+/* ===== CONTENT ===== */
+.content {
+    flex: 1;
+    padding: 25px;
+}
+
+/* ===== CARD ===== */
+.card {
+     background: #353b48;
+    color: #f5f6fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+/* ===== TITLES ===== */
+.card h3 {
+    color: #00a8ff;
+}
+
+/* ===== LIST ===== */
+.material-list li {
+    margin: 8px 0;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.material-actions {
+    margin-top: 15px;
+}
+
+.material-actions a {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-right: 10px;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+/* EDIT */
+.edit-btn {
+    background: #e8f0fe;
+    color: #1a73e8;
+}
+
+.edit-btn:hover {
+    background: #d2e3fc;
+}
+
+/* DELETE */
+.delete-btn {
+    background: #fce8e6;
+    color: #d93025;
+}
+
+.delete-btn:hover {
+    background: #f9d6d2;
+}
+
+/* ===== BUTTON ===== */
+.btn {
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+     background: #00a8ff;
+    color: white;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #0097e6;
+    box-shadow: 0px 4px 12px rgba(0,168,255,0.4);
+}
+
+/* ===== EMPTY TEXT ===== */
+.empty {
+    color: #777;
+    margin-top: 10px;
+}
+
+/* ===== LOGIN PAGE ===== */
+.login-container {
+    max-width: 400px;
+    margin: 80px auto;
+    background: #353b48;
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    animation: fadeIn 0.6s ease;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+    color: #1a73e8;
+}
+
+/* INPUTS */
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 6px;
+    font-size: 14px;
+    display: block;
+    background: #2f3640;
+    color: white;
+    border: 1px solid #555;
+}
+
+/* INPUT FOCUS */
+.login-container input:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0px 0px 8px rgba(26,115,232,0.3);
+}
+
+/* ERROR */
+.error {
+    color: #d93025;
+    background: #fce8e6;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+/* TEXT */
+.login-container p {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+     background: #2f3640;
+    color: #aaa;
+    text-align: center;
+    padding: 10px;
+    margin-top: auto;
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* https://stock.adobe.com/in/images/asian-teenage-woman-sitting-in-white-office-with-laptop-she-is-a-student-studying-online-with-laptop-at-home-university-student-studying-online-online-web-education-concept/572860227 */
+
+/* ===== AUTH SPLIT DESIGN ===== */
+.auth-container {
+    width: 900px;
+    height: 500px;
+    margin: 60px auto;
+    display: flex;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
+    background: #353b48;
+}
+
+/* LEFT SIDE */
+.auth-left {
+    flex: 1;
+    background: url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f") center/cover;
+    position: relative;
+}
+
+/* OVERLAY */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+     background: linear-gradient(
+        to bottom right,
+        rgba(0, 0, 0, 0.7),
+        rgba(0, 168, 255, 0.4)
+    );
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.overlay p {
+    font-size: 16px;
+}
+
+/* RIGHT SIDE */
+.auth-right {
+    flex: 1;
+    padding: 40px;
+    text-align: center;
+
+}
+
+.auth-right h2 {
+    margin-bottom: 20px;
+    color: #1a73e8;
+}
+
+/* INPUTS */
+.auth-right input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 6px;
+    background: #2f3640;
+    color: white;
+    border: 1px solid #555;
+}
+
+/* BUTTON */
+.auth-right .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+.auth-right a {
+    color: #00a8ff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-right a:hover {
+    color: #0097e6;
+    text-decoration: underline;
+    text-shadow: 0 0 5px rgba(0,168,255,0.6);
+}
+

@@ -1,55 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>{% block title %}Online Classroom{% endblock %}</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-            background-color: #f4f6f9;
-        }
-
-        /* Navbar */
-        .navbar {
-            background: #4e73df;
-            padding: 15px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin-left: 15px;
-        }
-
-        .container {
-            padding: 30px;
-        }
-
-        .footer {
-            background: #2e59d9;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            margin-top: 50px;
-        }
-
-        button {
-            padding: 8px 15px;
-            background: #4e73df;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #2e59d9;
-        }
-    </style>
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
@@ -78,7 +34,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="container">
+    <div class="content">
         {% block content %}
         {% endblock %}
     </div>
