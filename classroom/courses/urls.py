@@ -20,3 +20,5 @@ path("material/delete/<int:material_id>/",
      views.delete_material, 
      name="delete_material"),
 ]
+
+

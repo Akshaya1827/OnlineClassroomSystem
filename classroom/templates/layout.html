@@ -3,46 +3,74 @@
 <html>
 <head>
     <title>{% block title %}Online Classroom{% endblock %}</title>
-
-    <!-- External CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
-    <!-- Navbar -->
-    <div class="navbar">
-        <div>
-            <strong>Online Classroom</strong>
-        </div>
-
-        <div>
-            {% if user.is_authenticated %}
-                <span>Welcome, {{ user.username }}</span>
-
-                {% if user.role == "student" %}
-                    <a href="{% url 'student_dashboard' %}">Dashboard</a>
-                {% elif user.role == "teacher" %}
-                    <a href="{% url 'teacher_dashboard' %}">Dashboard</a>
-                {% endif %}
-
-                <a href="{% url 'logout' %}">Logout</a>
-            {% else %}
-                <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}">Register</a>
-            {% endif %}
-        </div>
+<!-- Navbar -->
+<div class="navbar">
+    <div>
+        <strong>Online Classroom</strong>
     </div>
 
-    <!-- Main Content -->
+    <div>
+        {% if user.is_authenticated %}
+            <span>Welcome, {{ user.username }}</span>
+
+            {% if user.role == "student" %}
+                <a href="{% url 'student_dashboard' %}">Dashboard</a>
+            {% elif user.role == "teacher" %}
+                <a href="{% url 'teacher_dashboard' %}">Dashboard</a>
+            {% endif %}
+
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+    {% if user.is_authenticated and request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
+    <div class="sidebar">
+        <h3>Menu</h3>
+
+        <a href="#">🏠 Home</a>
+        <a href="#">📅 Calendar</a>
+        <a href="#">📝 To Do</a>
+
+        <div class="sidebar-courses">
+            <h4>Enrolled</h4>
+
+            {% for course in courses %}
+                <a href="{% url 'course_detail' course.id %}" class="course-item">
+                    {{ course.name }}
+                </a>
+            {% empty %}
+                <p class="empty">No courses</p>
+            {% endfor %}
+        </div>
+
+        <a href="#">⚙ Settings</a>
+    </div>
+    {% endif %}
+
+    <!-- PAGE CONTENT -->
     <div class="content">
         {% block content %}
         {% endblock %}
     </div>
 
-    <!-- Footer -->
-    <div class="footer">
-        © 2026 Online Classroom System | Developed by Akshaya & Helly
-    </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    © 2026 Online Classroom System | Developed by Akshaya & Helly
+</div>
 
 </body>
 </html>
