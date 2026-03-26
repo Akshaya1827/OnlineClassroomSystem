@@ -1,39 +1,70 @@
 {% extends 'layout.html' %}
-
 {% block title %}Course Materials{% endblock %}
 
 {% block content %}
-<h2>Course Materials - {{ course.name }}</h2>
 
-<ul>
-{% for material in materials %}
-  <div class="material-block">
-    <h3>{{ material.title }}</h3>
-    <p>{{ material.description }}</p>
+<!-- COURSE HEADER -->
+<div class="course-banner">
+    <div class="banner-left">
+        <h1>{{ course.name }}</h1>
+        <p>📘 Course Materials</p>
+    </div>
+</div>
+<!-- TOP BAR -->
+<div class="top-bar">
 
-    {% if material.files.exists %}
-      <ul>
-        {% for file in material.files.all %}
-      
-          <li>
-            <a href="{{ file.file.url }}">{{ file.file.name}}</a>
-           
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No files</p>
+    <h2>Course Materials</h2>
+
+    {% if request.user == course.teacher %}
+        <a href="{% url 'upload_material' course.id %}" class="btn-primary">
+            ➕ Create Material
+        </a>
     {% endif %}
 
-    <!-- Material-level actions: one pair per material -->
-     {% if user == course.teacher %}
-    <div class="material-actions">
-      <a href="{% url 'update_material' material.id %}">Edit</a>
-      <a href="{% url 'delete_material' material.id %}">Delete</a>
-    </div>
-        {% endif %}
-  </div>
-  <hr>
-{% endfor %}
-</ul>
+</div>
+<!-- MATERIAL LIST -->
+<div class="content">
+
+    {% if materials %}
+        {% for material in materials %}
+            <div class="card">
+
+                <!-- TITLE -->
+                <h3>{{ material.title }}</h3>
+                <p>{{ material.description }}</p>
+
+                <!-- FILES -->
+                <ul class="material-list">
+                    {% for file in material.files.all %}
+                        <li>
+                             
+                            <a href="{{ file.file.url }}" target="_blank">
+                                📄{{ file.file.name|cut:"course_materials/" }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- ACTION BUTTONS (ONLY FOR TEACHER) -->
+                {% if request.user == course.teacher %}
+                <div class="material-actions">
+                    <a href="{% url 'update_material' material.id %}" class="edit-btn">
+                        ✏ Edit
+                    </a>
+
+                    <a href="{% url 'delete_material' material.id %}" class="delete-btn">
+                        🗑 Delete
+                    </a>
+                </div>
+                {% endif %}
+
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <p class="empty">No materials uploaded yet.</p>
+    {% endif %}
+
+</div>
+
 {% endblock %}

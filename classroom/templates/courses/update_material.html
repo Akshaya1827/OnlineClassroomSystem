@@ -1,30 +1,65 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
+{% block title %}Update Material{% endblock %}
 
 {% block content %}
-<h2>Update Material</h2>
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+<!-- HEADER -->
+<div class="course-banner">
+    <div class="banner-left">
+        <h1>✏ Update Material</h1>
+        <p>{{ material.course.name }}</p>
+    </div>
+</div>
 
-    {{ form.as_p }}
+<div class="content">
 
-    <label>Add More Files:</label>
-    <input type="file" name="files" multiple>
+    <!-- FORM CARD -->
+    <div class="card">
 
-    <button type="submit">Update</button>
-</form>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-<hr>
+            <!-- TITLE -->
+            <label>Title</label>
+            <input type="text" name="title" value="{{ material.title }}" required>
 
-<h3>Existing Files</h3>
+            <!-- DESCRIPTION -->
+            <label>Description</label>
+            <textarea name="description" rows="5">{{ material.description }}</textarea>
 
-{% for file in material.files.all %}
-    <p>
-        {{ file.file.name }}
-        <a href="{% url 'delete_material_file' file.id %}">Delete</a>
-    </p>
-{% empty %}
-    <p>No files uploaded.</p>
-{% endfor %}
+            <!-- FILE UPLOAD -->
+            <label>Add More Files</label>
+            <input type="file" name="files" multiple>
+
+            <br><br>
+
+            <!-- BUTTON -->
+            <button type="submit" class="btn">Update Material</button>
+
+        </form>
+    </div>
+
+    <!-- EXISTING FILES -->
+    <div class="card">
+        <h3>📂 Existing Files</h3>
+
+        {% if material.files.all %}
+            <ul class="material-list">
+                {% for file in material.files.all %}
+                    <li>
+                        📄 {{ file.file.name|cut:"course_materials/" }}
+
+                        <a href="{% url 'delete_material_file' file.id %}" class="delete-btn">
+                            Delete
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty">No files available</p>
+        {% endif %}
+    </div>
+
+</div>
 
 {% endblock %}

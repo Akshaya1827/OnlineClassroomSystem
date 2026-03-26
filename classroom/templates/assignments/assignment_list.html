@@ -1,59 +1,92 @@
 {% extends 'layout.html' %}
-
 {% block title %}Assignments{% endblock %}
 
 {% block content %}
-<h2>Assignments - {{ course.name }}</h2>
 
-{% for assignment in assignments %}
-<div style="border:1px solid ; padding:10px; margin:10px;">
+<!-- HEADER -->
+<div class="course-banner">
+    <div class="banner-left">
+        <h1>{{ course.name }}</h1>
+        <p>📝 Assignments</p>
+    </div>
+</div>
 
-    <h3>{{ assignment.title }}</h3>
-    <p>{{ assignment.description }}</p>
+<!-- TOP BAR -->
+<div class="top-bar">
 
-    <h4>Files:</h4>
+    <h2>All Assignments</h2>
 
-    {% for file in assignment.files.all %}
-        {% with file.file.name as full_name %}
-        {% with full_name|cut:"materials/" as clean_name %}
-            <a href="{{ file.file.url }}" target="_blank">
-                {{ clean_name }}
-            </a>
-        {% endwith %}
-        {% endwith %}
-
-        <br>
-    {% empty %}
-        <p>No files uploaded.</p>
-    {% endfor %}
-
-    {% if assignment.due_date %}
-        <p><b>Due:</b> {{ assignment.due_date }}</p>
-    {% else %}
-        <p><b>No Due Date</b></p>
-    {% endif %}
-
-    {% if user.role == 'student' %}
-        {% for sub in submissions %}
-            {% if sub.assignment.id == assignment.id %}
-                <p style="color:green;"><b>Submitted</b></p>
-            {% endif %}
-        {% endfor %}
-
-        <a href="{% url 'submit_assignment' assignment.id %}">
-            Submit
-        </a>
-    {% endif %}
-
-    {% if user.role == 'teacher' %}
-        <a href="{% url 'update_assignment' assignment.id %}">Update</a>
-         <a href="{% url 'delete_assignment' assignment.id %}">Delete Assignment</a>
-        <a href="{% url 'view_submissions' assignment.id %}">
-            View Submissions
+    {% if request.user == course.teacher %}
+        <a href="{% url 'create_assignment' course.id %}" class="btn-primary">
+            ➕ Create Assignment
         </a>
     {% endif %}
 
 </div>
-{% endfor %}
+
+<!-- ASSIGNMENT LIST -->
+<div class="content">
+
+    {% if assignments %}
+        {% for assignment in assignments %}
+            <div class="card">
+
+                <!-- TITLE -->
+                <h3>{{ assignment.title }}</h3>
+                <p>{{ assignment.description }}</p>
+
+                <!-- FILES -->
+                {% if assignment.files.all %}
+                <div class="material-list">
+                    <strong>📂 Files:</strong>
+                    <ul>
+                        {% for file in assignment.files.all %}
+                            <li>
+                                
+                                <a href="{{ file.file.url }}" target="_blank">
+                                   📄 {{ file.file.name|cut:"assignments/" }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- DUE DATE -->
+                <p style="margin-top:10px; color:#fbc531;">
+                    ⏰ Due: {{ assignment.due_date }}
+                </p>
+
+                <!-- ACTION BUTTONS -->
+                <div class="material-actions">
+
+                    {% if request.user == course.teacher %}
+                        <a href="{% url 'update_assignment' assignment.id %}" class="edit-btn">
+                            ✏ Update
+                        </a>
+
+                        <a href="{% url 'delete_assignment' assignment.id %}" class="delete-btn">
+                            🗑 Delete
+                        </a>
+
+                        <a href="{% url 'view_submissions' assignment.id %}" class="btn-secondary">
+                            📥 Submissions
+                        </a>
+                    {% else %}
+                        <a href="{% url 'submit_assignment' assignment.id %}" class="btn-primary">
+                            📤 Submit
+                        </a>
+                    {% endif %}
+
+                </div>
+
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <p class="empty">No assignments available.</p>
+    {% endif %}
+
+</div>
 
 {% endblock %}

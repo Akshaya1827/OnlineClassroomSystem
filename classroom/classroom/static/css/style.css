@@ -109,10 +109,18 @@ a {
 .card h3 {
     color: #00a8ff;
 }
+.material-list ul {
+    margin-top: 5px;
+    padding-left: 15px;
+}
 
+.material-list li {
+    margin-bottom: 5px;
+}
 /* ===== LIST ===== */
 .material-list li {
     margin: 8px 0;
+    margin-bottom: 5px;
 }
 
 /* ===== ACTION BUTTONS ===== */
@@ -144,6 +152,8 @@ a {
 .delete-btn {
     background: #fce8e6;
     color: #d93025;
+    padding: 4px;
+    border-radius: 5px;
 }
 
 .delete-btn:hover {
@@ -624,6 +634,7 @@ a {
     padding: 10px 16px;
     border-radius: 8px;
     font-weight: 500;
+    margin-top: 5px;
 }
 
 .btn-danger {
@@ -778,15 +789,8 @@ a {
     flex-wrap: wrap;
 }
 
-/* PRIMARY BUTTON */
-.btn-primary {
-    background: linear-gradient(135deg, #00a8ff, #00d2ff);
-    color: white;
-    padding: 10px 16px;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: 0.3s;
-}
+
+
 
 .btn-primary:hover {
     transform: translateY(-2px);
@@ -817,4 +821,104 @@ a {
     position: relative;
     z-index: 9999;
     pointer-events: auto;
+}
+.material-list {
+    margin-top: 10px;
+    padding-left: 0;
+    list-style: none;
+}
+
+.material-list li {
+    background: #2f3640;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    transition: 0.3s;
+}
+
+.material-list li:hover {
+    background: #353b48;
+}
+
+.material-list a {
+    color: #00a8ff;
+    text-decoration: none;
+}
+
+.material-list a:hover {
+    text-decoration: underline;
+}
+/* FORM INPUTS (GLOBAL) */
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #555;
+    background: #2f3640;
+    color: white;
+}
+
+/* LABEL */
+label {
+    font-size: 14px;
+    color: #aaa;
+}
+
+/* FILE INPUT */
+input[type="file"] {
+
+    padding: 6px;
+}
+
+/* FILE LIST WITH DELETE */
+.material-list li {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+/* DELETE CARD CENTER */
+.delete-card {
+    max-width: 500px;
+    margin: 80px auto;
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+}
+
+/* TEXT */
+.delete-text {
+    margin: 15px 0;
+    color: #ccc;
+}
+
+/* FILE PREVIEW BOX */
+.file-preview {
+    background: #2f3640;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 15px 0;
+    color: #00d2ff;
+    font-weight: 500;
+}
+
+/* ACTION BUTTONS */
+.delete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* BUTTON STYLES */
+
+
+.btn-danger:hover {
+    background: #e84118;
+}
+
+
+
+.btn-secondary:hover {
+    background: #747d8c;
 }
