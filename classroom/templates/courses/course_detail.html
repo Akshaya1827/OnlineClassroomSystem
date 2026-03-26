@@ -1,60 +1,73 @@
-
 {% extends 'layout.html' %}
+{% block title %}Course Detail{% endblock %}
 
 {% block content %}
 
-<div class="content">
+<!-- COURSE HEADER -->
+<div class="course-banner">
 
-    <!-- HEADER -->
-    <div class="course-header-page">
-        <h2>{{ course.name }}</h2>
+    <div class="banner-left">
+        <h1>{{ course.name }}</h1>
         <p>{{ course.subject }}</p>
     </div>
 
-    <!-- COURSE INFO -->
-  
+    <!-- RIGHT SIDE -->
+    <div class="banner-right">
+        <div class="menu-container">
+            <button class="menu-btn" onclick="toggleMenu(event)">⋮</button>
 
-    <!-- MENU (THIS IS IMPORTANT 🔥) -->
-    <div class="course-menu">
-
-        <a href="{% url 'view_materials' course.id %}">📘 Materials</a>
-
-        <a href="{% url 'assignment_list' course.id %}">📝 Assignments</a>
-
-        <a href="{% url 'leaderboard' course.id %}">🏆 Leaderboard</a>
-
-        <a href="{% url 'doubt_box' course.id %}">💬 Doubts</a>
-
+            <div class="dropdown-menu">
+                <a href="#">📤 Upload Material</a>
+                <a href="#">📝 Create Assignment</a>
+                <a href="#">✏ Edit Course</a>
+                <a href="#" class="danger">🗑 Delete Course</a>
+            </div>
+        </div>
     </div>
 
-    <!-- Put this inside content area -->
-<div class="announcement-btn" onclick="openPostModal()">
-    ✏️ New announcement
 </div>
-    <!-- BACK BUTTON -->
-    <a href="{% url 'student_dashboard' %}" class="btn">← Back to Dashboard</a>
 
+
+
+<!-- NAVIGATION TABS -->
+<div class="course-tabs">
+    <a href="{% url 'view_materials' course.id %}">📘 Materials</a>
+    <a href="{% url 'assignment_list' course.id %}">📝 Assignments</a>
+    <a href="{% url 'leaderboard' course.id %}">🏆 Leaderboard</a>
+    <a href="{% url 'doubt_box' course.id %}">💬 Doubts</a>
 </div>
-<div id="postModal" class="modal">
+<div class="announcement-box" onclick="openModal()">
+    📢 Make an announcement...
+</div>
+<div class="modal" id="announcementModal">
     <div class="modal-content">
-        <h2>Post</h2>
+        <h3>Create Announcement</h3>
 
-        <textarea placeholder="Announce something to your class"></textarea>
+        <textarea placeholder="Write your announcement..."></textarea>
 
         <div class="modal-actions">
-            <button onclick="closePostModal()" class="cancel-btn">Cancel</button>
+            <button class="cancel-btn" onclick="closeModal()">Cancel</button>
             <button class="post-btn">Post</button>
         </div>
     </div>
 </div>
+<!-- TEACHER ACTION BUTTONS
+<div class="teacher-actions">
+    <a href="{% url 'upload_material' course.id %}" class="btn-primary">
+        📤 Upload Material
+    </a>
 
-<script>
-function openPostModal() {
-    document.getElementById("postModal").style.display = "flex";
-}
+    <a href="{% url 'create_assignment' course.id %}" class="btn-primary">
+        📝 Create Assignment
+    </a>
 
-function closePostModal() {
-    document.getElementById("postModal").style.display = "none";
-}
-</script>
+    <a href="{% url 'update_course' course.id %}" class="btn-secondary">
+        ✏ Edit Course
+    </a>
+
+    <a href="{% url 'delete_course' course.id %}" class="btn-danger">
+        🗑 Delete Course
+    </a>
+</div> -->
+
 {% endblock %}

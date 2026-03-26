@@ -1,42 +1,59 @@
-
 {% extends 'layout.html' %}
 
 {% block title %}Teacher Dashboard{% endblock %}
 
 {% block content %}
-<h1>Teacher Dashboard</h1>
-<p>Welcome {{ request.user.username }}</p>
-<a href="{% url 'logout' %}">Logout</a>
-<a href="{% url 'create_course' %}">Create New Course</a>
-<h2>My Courses</h2>
 
-<ul>
-  {% for course in courses %}
-  <li style="border:1px solid #ccc; padding:15px; margin:10px; list-style:none;">
-      
-      <strong>Course Name:</strong> {{ course.name }} <br>
-      <strong>Subject:</strong> {{ course.subject }} <br>
-      <strong>Course Code:</strong> {{ course.course_code }} <br>
-      
-      <a href="{% url 'course_detail' course.id %}">View Details</a>
-      <strong>Enrolled Students:</strong> {{ course.student_count }}
-      
-      <br><br>
+<div class="dashboard-header">
+    <div>
+        <h1>Teacher Dashboard</h1>
+        <p>Welcome, {{ request.user.username }}</p>
+    </div>
 
-      <a href="{% url 'update_course' course.id %}">Edit</a> |
-      <a href="{% url 'delete_course' course.id %}">Delete</a> |
-      <a href="{% url 'upload_material' course.id %}">Upload Material</a> |
-      <a href="{% url 'view_materials' course.id %}">View Materials</a> |
-      <a href="{% url 'create_assignment' course.id %}">Create Assignment</a> |
-      <a href="{% url 'assignment_list' course.id %}">View Assignments</a> |
-      <a href="{% url 'leaderboard' course.id %}">View Leaderboard</a> |
-      <a href="{% url 'doubt_box' course.id %}">Doubt Box</a>
+   <div class="header-actions">
+    <a href="{% url 'create_course' %}" class="btn-primary">+ Create Course</a>
+    <a href="{% url 'logout' %}" class="btn-danger">Logout</a>
+</div>
+</div>
 
-  </li>
-  {% empty %}
-  <li>No courses created yet.</li>
-  {% endfor %}
-</ul>
+<h2 class="section-title">My Courses</h2>
 
+<div class="course-grid">
+    {% for course in courses %}
+    
+    <div class="course-card">
+        
+        <!-- Clickable Area -->
+        <a href="{% url 'course_detail' course.id %}" class="card-link">
+    <div class="course-header">
+        <h3>{{ course.name }}</h3>
+    </div>
+
+    <div class="course-body">
+        <p><strong>{{ course.subject }}</strong></p>
+        <p>Code: {{ course.course_code }}</p>
+        <p>{{ course.student_count }} Students</p>
+    </div>
+</a>
+
+        <!-- Actions -->
+        <div class="course-actions">
+            <a href="{% url 'upload_material' course.id %}">Upload Material</a>
+            <a href="{% url 'create_assignment' course.id %}">Create Assignment</a>
+           
+        </div>
+
+        <!-- Bottom actions -->
+        <div class="course-footer">
+            <a href="{% url 'update_course' course.id %}">Edit</a>
+            <a href="{% url 'delete_course' course.id %}" class="danger">Delete</a>
+        </div>
+
+    </div>
+
+    {% empty %}
+    <p>No courses created yet.</p>
+    {% endfor %}
+</div>
 
 {% endblock %}

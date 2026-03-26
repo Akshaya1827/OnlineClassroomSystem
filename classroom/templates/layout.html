@@ -72,5 +72,48 @@
     © 2026 Online Classroom System | Developed by Akshaya & Helly
 </div>
 
+
 </body>
+<script>
+function toggleMenu(event) {
+    event.stopPropagation(); // prevent closing immediately
+
+    let menu = event.currentTarget.nextElementSibling;
+
+    // Close all other menus
+    document.querySelectorAll('.dropdown-menu').forEach(m => {
+        if (m !== menu) m.style.display = 'none';
+    });
+
+    // Toggle current
+    if (menu.style.display === 'block') {
+        menu.style.display = 'none';
+    } else {
+        menu.style.display = 'block';
+    }
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function() {
+    document.querySelectorAll('.dropdown-menu').forEach(m => {
+        m.style.display = 'none';
+    });
+});
+function openModal() {
+    document.getElementById('announcementModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('announcementModal').style.display = 'none';
+}
+
+// Close when clicking outside
+window.onclick = function(event) {
+    let modal = document.getElementById('announcementModal');
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
 </html>
