@@ -536,7 +536,21 @@ a {
     background: #2f3640;
     color: white;
 }
+.announcement-card {
+    background: #353b48;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
 
+.announcement-card p {
+    margin-bottom: 8px;
+}
+
+.announcement-card small {
+    color: #aaa;
+}
 /* MODAL */
 .modal {
     display: none;

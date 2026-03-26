@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import CourseForm, JoinCourseForm, CourseMaterialForm
-from .models import Course, Enrollment, CourseMaterial, MaterialFile
+from .models import Course, Enrollment, CourseMaterial, MaterialFile, Announcement
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.db.models import Count
@@ -166,8 +166,11 @@ from django.shortcuts import get_object_or_404
 def course_detail(request, course_id):
     course = get_object_or_404(Course, id=course_id)
 
+    announcements = Announcement.objects.filter(course=course).order_by('-created_at')
+
     return render(request, "courses/course_detail.html", {
-        "course": course
+        "course": course,
+        "announcements": announcements
     })
 
 @login_required
@@ -237,3 +240,21 @@ def delete_material(request, material_id):
     return render(request, "courses/confirm_delete_material.html", {
         "material": material
     })
+
+
+def create_announcement(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+
+    if request.user != course.teacher:
+        return HttpResponseForbidden("Not allowed")
+    if request.method == "POST":
+        message = request.POST.get('message')
+        course = Course.objects.get(id=course_id)
+
+        Announcement.objects.create(
+            course=course,
+            teacher=request.user,
+            message=message
+        )
+
+    return redirect('course_detail', course_id=course_id)

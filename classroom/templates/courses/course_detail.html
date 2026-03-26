@@ -12,6 +12,7 @@
     </div>
 
     <!-- RIGHT SIDE -->
+     {% if user == course.teacher %}
     <div class="banner-right">
         <div class="menu-container">
             <button class="menu-btn" onclick="toggleMenu(event)">⋮</button>
@@ -24,6 +25,7 @@
             </div>
         </div>
     </div>
+        {% endif %}
 
 </div>
 
@@ -36,20 +38,42 @@
     <a href="{% url 'leaderboard' course.id %}">🏆 Leaderboard</a>
     <a href="{% url 'doubt_box' course.id %}">💬 Doubts</a>
 </div>
+<!-- if user is teacher then only -->
+{% if user == course.teacher %}
 <div class="announcement-box" onclick="openModal()">
     📢 Make an announcement...
 </div>
+{% endif %}
 <div class="modal" id="announcementModal">
     <div class="modal-content">
         <h3>Create Announcement</h3>
 
-        <textarea placeholder="Write your announcement..."></textarea>
+        <form method="POST" action="{% url 'create_announcement' course.id %}">
+            {% csrf_token %}
 
-        <div class="modal-actions">
-            <button class="cancel-btn" onclick="closeModal()">Cancel</button>
-            <button class="post-btn">Post</button>
-        </div>
+            <textarea name="message" placeholder="Write your announcement..." required></textarea>
+
+            <div class="modal-actions">
+                <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="post-btn">Post</button>
+            </div>
+        </form>
     </div>
+</div>
+<div class="announcement-list">
+{% if announcements %}
+    {% for ann in announcements %}
+        <div class="announcement-card">
+             <small style="color:#aaa;">
+         {{ ann.teacher.username }} • {{ ann.created_at }}
+    </small>
+            <p>{{ ann.message }}</p>
+           
+        </div>
+    {% empty %}
+        <p class="empty">No announcements yet</p>
+    {% endfor %}
+{% endif %}
 </div>
 <!-- TEACHER ACTION BUTTONS
 <div class="teacher-actions">

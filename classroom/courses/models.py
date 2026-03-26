@@ -60,3 +60,11 @@ class MaterialFile(models.Model):
         super().delete(*args, **kwargs)
     def __str__(self):
         return f"File for {self.material.title}"
+class Announcement(models.Model):
+    course = models.ForeignKey('Course', on_delete=models.CASCADE)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.message[:50]

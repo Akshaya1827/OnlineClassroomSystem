@@ -19,6 +19,9 @@ path("material/update/<int:material_id>/", views.update_material, name="update_m
 path("material/delete/<int:material_id>/", 
      views.delete_material, 
      name="delete_material"),
+path('course/<int:course_id>/announcement/', views.create_announcement, name='create_announcement'),
 ]
+
+
 
 
