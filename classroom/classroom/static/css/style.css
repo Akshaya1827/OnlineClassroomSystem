@@ -19,7 +19,9 @@ body {
   
    
 }
-
+hr{
+    border: 1px solid #444;
+}
 /* ===== NAVBAR ===== */
 .navbar {
     background: #2f3640;
@@ -800,9 +802,10 @@ a {
 .btn-secondary {
     background: #57606f;
     color: white;
-    padding: 10px 16px;
+    padding: 8px 16px;
     border-radius: 8px;
-    text-decoration: none;
+    font-weight: 500;
+    margin-top: 5px;
 }
 
 /* DANGER BUTTON */

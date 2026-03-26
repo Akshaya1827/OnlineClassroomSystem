@@ -73,9 +73,13 @@
                             📥 Submissions
                         </a>
                     {% else %}
+                    {% if already_submitted %}
+<p style="color:#4cd137;">✅ Already submitted</p>
+{% endif %}
                         <a href="{% url 'submit_assignment' assignment.id %}" class="btn-primary">
                             📤 Submit
                         </a>
+                        
                     {% endif %}
 
                 </div>
