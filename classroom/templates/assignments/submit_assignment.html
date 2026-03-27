@@ -3,45 +3,63 @@
 
 {% block content %}
 
-<!-- HEADER -->
 <div class="course-banner">
     <div class="banner-left">
-        <h1>📤 Submit Assignment</h1>
-        <p>{{ assignment.course.name }}</p>
+        <h1>{{ assignment.course.name }}</h1>
+        <p>📤 Submit Assignment</p>
     </div>
 </div>
 
 <div class="content">
-    <!-- SUBMIT CARD -->
+
     <div class="card">
 
-        <!-- ASSIGNMENT INFO -->
-        <h3>📝 {{ assignment.title }}</h3>
+        <h2>{{ assignment.title }}</h2>
 
-        <p style="color:#aaa;">
-            {{ assignment.description }}
+        <p style="color:#fbc531;">
+            ⏰ Due: {{ assignment.due_date }}
         </p>
 
-        <!-- DUE DATE -->
-        <p style="margin-top:10px; color:#fbc531;">
-            ⏰ Due: {{ assignment.due_date|date:"M d, Y - H:i" }}
-        </p>
+        <!-- 🔥 SHOW PREVIOUS SUBMISSION -->
+        {% if existing_submission and existing_submission.files.exists %}
+            <div class="material-list">
+                <strong>📂 Your Previous Submission:</strong>
+                <ul>
+                    <li>
+                        <a href="{{ existing_submission.file.url }}" target="_blank">
+                            📄 {{ existing_submission.file.name|cut:"submissions/" }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-        <hr style="margin:15px 0; border-color:#444;">
+            <p style="color:#4cd137;">✅ Already Submitted</p>
 
-        <!-- FORM -->
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
+            <div class="material-actions">
+                <a href="{% url 'delete_submission' existing_submission.id %}" class="delete-btn">
+                    🗑 Delete
+                </a>
+            </div>
+        {% endif %}
 
-            <label>Upload File</label>
-            <input type="file" name="file" required>
+        <!-- 🔥 SUBMIT / RESUBMIT -->
+        {% if not is_closed %}
+            <form method="POST" enctype="multipart/form-data" style="margin-top:20px;">
+                {% csrf_token %}
 
-            <br><br>
-
-            <button type="submit" class="btn">
-                📤 Submit Assignment
-            </button>
-        </form>
+                <label>📤 Upload Files:</label>
+                <input type="file" name="files" multiple>
+                <button type="submit" class="btn-primary">
+                    {% if existing_submission %}
+                        🔄 Resubmit (Replace File)
+                    {% else %}
+                        📤 Submit
+                    {% endif %}
+                </button>
+            </form>
+        {% else %}
+            <p style="color:red;">❌ Submission Closed</p>
+        {% endif %}
 
     </div>
 

@@ -15,4 +15,4 @@ class AssignmentForm(forms.ModelForm):
 class SubmissionForm(forms.ModelForm):
     class Meta:
         model = Submission
-        fields = ['file']
+        fields = []   # 🔥 no direct file field now

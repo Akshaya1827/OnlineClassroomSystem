@@ -39,7 +39,7 @@ class AssignmentFile(models.Model):
 class Submission(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     student = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'student'})
-    file = models.FileField(upload_to='submissions/')
+   
     submitted_at = models.DateTimeField(auto_now_add=True)
     score = models.FloatField(default=0)
     class Meta:
@@ -47,3 +47,7 @@ class Submission(models.Model):
 
     def __str__(self):
         return f"{self.student.email} - {self.assignment.title}"
+
+class SubmissionFile(models.Model):
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE, related_name='files')
+    file = models.FileField(upload_to='submissions/')

@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block title %}Update Submission{% endblock %}
+
+{% block content %}
+
+<div class="course-banner">
+    <div class="banner-left">
+        <h1>{{ submission.assignment.course.name }}</h1>
+        <p>🔄 Update Submission</p>
+    </div>
+</div>
+
+<div class="content">
+
+    <div class="card">
+
+        <h2>{{ submission.assignment.title }}</h2>
+
+        <!-- EXISTING FILES -->
+        <div class="material-list">
+            <strong>📂 Your Files:</strong>
+            <ul>
+                {% for file in submission.files.all %}
+                    <li>
+                        <a href="{{ file.file.url }}" target="_blank">
+                            📄 {{ file.file.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- ADD MORE FILES -->
+        <form method="POST" enctype="multipart/form-data" style="margin-top:20px;">
+            {% csrf_token %}
+
+            <label>📤 Add More Files:</label>
+            <input type="file" name="files" multiple>
+
+            <button type="submit" class="btn-primary">
+                🔄 Upload
+            </button>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

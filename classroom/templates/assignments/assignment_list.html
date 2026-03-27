@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+
 {% block title %}Assignments{% endblock %}
 
 {% block content %}
@@ -72,15 +73,45 @@
                         <a href="{% url 'view_submissions' assignment.id %}" class="btn-secondary">
                             📥 Submissions
                         </a>
-                    {% else %}
-                    {% if already_submitted %}
-<p style="color:#4cd137;">✅ Already submitted</p>
+
+    {% else %}
+
+{% if assignment.user_submission and assignment.user_submission.files.exists %}
+    <p style="color:#4cd137;">✅ Submitted</p>
+
+    <div class="material-list">
+        <strong>Your Files:</strong>
+        <ul>
+            {% for file in assignment.user_submission.files.all %}
+                <li>
+                    <a href="{{ file.file.url }}" target="_blank">
+                        📄 {{ file.file.name }}
+                    </a>
+
+                    <!-- DELETE BUTTON FOR EACH FILE -->
+                    <form method="POST" action="{% url 'delete_submission_file' file.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button class="delete-btn"
+                                onclick="return confirm('Delete this file?')">
+                            ❌
+                        </button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- ADD MORE FILE (Resubmit / Update) -->
+    <a href="{% url 'update_submission' assignment.user_submission.id %}" class="edit-btn">
+        🔄 Add / Update Files
+    </a>
+
+{% else %}
+    <a href="{% url 'submit_assignment' assignment.id %}" class="btn-primary">
+        📤 Submit
+    </a>
 {% endif %}
-                        <a href="{% url 'submit_assignment' assignment.id %}" class="btn-primary">
-                            📤 Submit
-                        </a>
-                        
-                    {% endif %}
+{% endif %}
 
                 </div>
 

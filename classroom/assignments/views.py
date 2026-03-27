@@ -2,7 +2,7 @@ from importlib.resources import files
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Assignment, AssignmentFile, Submission
+from .models import Assignment, AssignmentFile, Submission, SubmissionFile
 from .forms import AssignmentForm, SubmissionForm
 from courses.models import Course
 from django.utils import timezone
@@ -45,18 +45,24 @@ def assignment_list(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     assignments = Assignment.objects.filter(course=course)
 
-    submissions = None
-    if request.user.role == 'student':
-        submissions = Submission.objects.filter(student=request.user)
+    submissions = Submission.objects.filter(
+        assignment__course=course,
+        student=request.user
+    )
+
+    submission_map = {}
+
+    for sub in submissions:
+        if sub.files.exists():   # ✅ check files
+            submission_map[sub.assignment.id] = sub
+
+    for assignment in assignments:
+        assignment.user_submission = submission_map.get(assignment.id)
 
     return render(request, 'assignments/assignment_list.html', {
         'assignments': assignments,
-        'course': course,
-        'submissions': submissions
+        'course': course
     })
-
-
-
 
 @login_required
 def submit_assignment(request, assignment_id):
@@ -68,7 +74,8 @@ def submit_assignment(request, assignment_id):
         assignment=assignment,
         student=request.user
     ).first()
-
+    if existing_submission and not existing_submission.files.exists():
+        existing_submission = None
     is_closed = False
     if assignment.due_date and timezone.now() > assignment.due_date:
         is_closed = True
@@ -89,21 +96,31 @@ def submit_assignment(request, assignment_id):
                 score = (remaining_time / total_time) * 100
             else:
                 score = 100
+            files = request.FILES.getlist("files")
 
+            if not files:
+                messages.error(request, "Please upload at least one file.")
+                return redirect(request.path)
             if existing_submission:
-                existing_submission.file = form.cleaned_data['file']
-                existing_submission.score = round(score, 2)
-                existing_submission.save()
-                messages.success(request, "Assignment updated successfully!")
-            else:
-                submission = form.save(commit=False)
-                submission.assignment = assignment
-                submission.student = request.user
+                submission = existing_submission
                 submission.score = round(score, 2)
                 submission.save()
-                messages.success(request, "Assignment submitted successfully!")
+            else:
+                submission = Submission.objects.create(
+                assignment=assignment,
+                student=request.user,
+                score=round(score, 2)
+          )
 
-            return redirect('student_dashboard')
+            for f in files:
+                SubmissionFile.objects.create(
+                submission=submission,
+                file=f
+        )
+
+
+            messages.success(request, "Assignment submitted successfully!")
+            return redirect('assignment_list', course_id=assignment.course.id)
     else:
         form = SubmissionForm()
 
@@ -216,13 +233,34 @@ def update_submission(request, submission_id):
         return redirect("assignment_list", course_id=assignment.course.id)
 
     if request.method == "POST":
-        new_file = request.FILES.get("file")
-        if new_file:
-            submission.file = new_file
-            submission.save()
+        files = request.FILES.getlist("files")
+
+        for f in files:
+            SubmissionFile.objects.create(
+                submission=submission,
+                file=f
+            )
 
         return redirect("assignment_list", course_id=assignment.course.id)
 
     return render(request, "assignments/update_submission.html", {
         "submission": submission
     })
+
+@login_required
+def delete_submission_file(request, file_id):
+    file = get_object_or_404(SubmissionFile, id=file_id)
+    submission = file.submission
+
+    if request.user != submission.student:
+        messages.error(request, "Permission denied.")
+        return redirect("student_dashboard")
+
+    if request.method == "POST":
+        file.delete()
+
+        # 🔥 If no files left → delete submission
+        if not submission.files.exists():
+            submission.delete()
+
+    return redirect("assignment_list", course_id=submission.assignment.course.id)

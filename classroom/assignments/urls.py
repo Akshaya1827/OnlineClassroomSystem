@@ -16,5 +16,9 @@ urlpatterns = [
     path('assignment/delete/<int:assignment_id>/', 
      views.delete_assignment, 
      name='delete_assignment'),
+     path('delete-file/<int:file_id>/', views.delete_submission_file, name='delete_submission_file'),
+     path('delete-submission/<int:submission_id>/', views.delete_submission, name='delete_submission'),
+    path('update-submission/<int:submission_id>/', views.update_submission, name='update_submission'),
 
 ]
+ 
