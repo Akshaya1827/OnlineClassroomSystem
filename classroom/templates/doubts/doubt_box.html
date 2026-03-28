@@ -1,29 +1,36 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<h2>Doubt Box - {{ course.name }}</h2>
 
-<div style="border:1px solid black; padding:10px; height:300px; overflow-y:scroll;">
+<div class="chat-page">
 
-    {% for msg in messages %}
-        <p>
-            <strong>{{ msg.sender.username }}</strong>
-            ({{ msg.timestamp|date:"d M Y H:i" }}):
-            <br>
-            {{ msg.message }}
-        </p>
-        <hr>
-    {% empty %}
-        <p>No doubts yet.</p>
-    {% endfor %}
+    <div class="chat-header">
+        <h2>Doubt Box - {{ course.name }}</h2>
+    </div>
+
+    <div class="chat-box" id="chatBox">
+        {% for msg in messages %}
+            <div class="chat-message {% if msg.sender == request.user %}my-msg{% else %}other-msg{% endif %}">
+                
+                <div class="msg-header">
+                    {{ msg.sender.username }} • {{ msg.timestamp|date:"H:i" }}
+                </div>
+
+                <div class="msg-text">
+                    {{ msg.message }}
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- INPUT -->
+    <form id="chatForm" class="chat-input">
+        {% csrf_token %}
+        <input type="text" id="messageInput" placeholder="Type your doubt..." required>
+        <button type="submit">Send</button>
+    </form>
 
 </div>
-
-<form method="POST">
-    {% csrf_token %}
-    <textarea name="message" rows="3" required></textarea>
-    <br>
-    <button type="submit">Send</button>
-</form>
 
 {% endblock %}

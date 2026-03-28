@@ -1,40 +1,51 @@
 {% extends 'layout.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Leaderboard{% endblock %}
 
 {% block content %}
-<h2>Leaderboard - {{ course.name }}</h2>
 
-<table border="1">
-    <tr>
-        <th>Rank</th>
-        <th>Student</th>
-        <th>Total Score</th>
-    </tr>
+<div class="leaderboard-container">
 
-    {% for student in leaderboard %}
-    <tr>
-        <td>
-            {% if forloop.counter == 1 %}
-                🥇
-            {% elif forloop.counter == 2 %}
-                🥈
-            {% elif forloop.counter == 3 %}
-                🥉
-            {% else %}
-                {{ forloop.counter }}
-            {% endif %}
-        </td>
+    <h2>🏆 Leaderboard - {{ course.name }}</h2>
 
-        <td>{{ student.student.username }}</td>
-        <td>{{ student.total_score }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="3">No submissions yet.</td>
-    </tr>
-    <tr {% if student.student.username == request.user.username %} style="background-color:#d4edda;" {% endif %}>
+    <div class="leaderboard-card">
 
-    {% endfor %}
-</table>
+        <div class="leader-header">
+            <span>Rank</span>
+            <span>Student</span>
+            <span>Score</span>
+        </div>
+
+        {% for student in leaderboard %}
+        <div class="leader-row 
+            {% if student.student.username == request.user.username %}highlight{% endif %}">
+
+            <!-- RANK -->
+            <span>
+                {% if forloop.counter == 1 %}
+                    🥇
+                {% elif forloop.counter == 2 %}
+                    🥈
+                {% elif forloop.counter == 3 %}
+                    🥉
+                {% else %}
+                    #{{ forloop.counter }}
+                {% endif %}
+            </span>
+
+            <!-- NAME -->
+            <span>{{ student.student.username }}</span>
+
+            <!-- SCORE -->
+            <span>{{ student.total_score }}</span>
+
+        </div>
+        {% empty %}
+            <p class="empty">No submissions yet 🚀</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
 {% endblock %}

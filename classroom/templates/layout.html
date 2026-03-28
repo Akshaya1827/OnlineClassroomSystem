@@ -6,6 +6,20 @@
     <title>{% block title %}Online Classroom{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+<script>
+function toggleTodo() {
+    const dropdown = document.getElementById("todoDropdown");
+    
+
+    if (dropdown.style.display === "block") {
+        dropdown.style.display = "none";
+        
+    } else {
+        dropdown.style.display = "block";
+        
+    }
+}
+</script>
 <body>
 
 <!-- Navbar -->
@@ -31,7 +45,13 @@
         {% endif %}
     </div>
 </div>
-
+{% if user.is_authenticated %}
+    {% for message in messages %}
+        <div class="alert-message">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 <!-- MAIN LAYOUT -->
 <div class="dashboard">
 
@@ -40,10 +60,29 @@
     <div class="sidebar">
         <h3>Menu</h3>
 
-        <a href="#">🏠 Home</a>
-        <a href="#">📅 Calendar</a>
-        <a href="#">📝 To Do</a>
+        {% if user.role == "student" %}
+    <a href="{% url 'student_dashboard' %}">🏠 Home</a>
 
+{% elif user.role == "teacher" %}
+    <a href="{% url 'teacher_dashboard' %}">🏠 Home</a>
+{% endif %}
+<div class="sidebar-item" onclick="toggleTodo()">
+    📝 To Do 
+</div>
+
+<div id="todoDropdown" class="todo-dropdown">
+
+    {% for task in todos %}
+        <a href="{% url 'assignment_list' task.course.id %}" class="todo-item">
+            <span>{{ task.title }}</span>
+            <small class="todo-course">{{ task.course.name }}</small>
+            <span>{{ task.due_date|date:"d M" }}</span>
+        </a>
+    {% empty %}
+        <p class="empty">No work 🎉</p>
+    {% endfor %}
+
+</div>
         <div class="sidebar-courses">
             <h4>Enrolled</h4>
 
