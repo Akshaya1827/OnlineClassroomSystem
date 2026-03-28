@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="home-container">
+
+    <div class="home-card">
+
+        <h1>📚 Classroom Platform</h1>
+        <p class="tagline">Learn. Teach. Grow.</p>
+
+        <p class="description">
+            This platform helps teachers and students connect in one place.
+            Teachers can manage classes, assign work, and track progress.
+            Students can join courses, submit assignments, and learn efficiently.
+        </p>
+        <div class="actions">
+            <a href="{% url 'login' %}" class="btn btn-login">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-register">Register</a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

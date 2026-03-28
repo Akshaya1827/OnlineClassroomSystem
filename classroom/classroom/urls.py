@@ -20,6 +20,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
+from .views import home
 
 
 
@@ -31,6 +32,7 @@ urlpatterns = [
     path('courses/',include('courses.urls')),
     path('assignments/', include('assignments.urls')),
     path('leaderboard/', include('leaderboard.urls')),
+    path('', home, name='home'),
     
 
 
