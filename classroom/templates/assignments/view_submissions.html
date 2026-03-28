@@ -1,23 +1,69 @@
 {% extends 'layout.html' %}
-
 {% block title %}View Submissions{% endblock %}
 
 {% block content %}
-<h2>
-Submissions - {{ assignment.title }}
-({{ total }} Submitted)
-</h2>
-{% if submissions %}
-    {% for submission in submissions %}
-        <div style="border:1px solid ; padding:10px; margin:10px;">
-            <p><b>Student:</b> {{ submission.student.email }}</p>
-            <p><b>Submitted at:</b> {{ submission.submitted_at }}</p>
-            <a href="{{ submission.file.url }}" target="_blank">
-                Download File
-            </a>
+
+<!-- 🔷 Banner -->
+<div class="course-banner">
+    <div class="banner-left">
+        <h1>{{ assignment.course.name }}</h1>
+        <p>📥 Assignment Submissions</p>
+    </div>
+</div>
+
+<div class="content">
+
+    <!-- 🔷 Heading Card -->
+    <div class="card">
+        <h2>
+            {{ assignment.title }}
+        </h2>
+        <p style="color:#fbc531;">
+            📊 {{ total }} Students Submitted
+        </p>
+    </div>
+
+    <!-- 🔷 Submissions List -->
+    {% if submissions %}
+        {% for submission in submissions %}
+            <div class="card" style="margin-top:15px;">
+
+                <!-- Student Info -->
+                <div style="display:flex; justify-content:space-between;">
+                    <div>
+                        <p><b>Student:</b> {{ submission.student.email }}</p>
+                        <p style="color:#aaa;">
+                            ⏰ {{ submission.submitted_at }}
+                        </p>
+                    </div>
+                </div>
+
+                <hr style="margin:10px 0;">
+
+                <!-- 📂 Files -->
+                <div class="material-list">
+                    <strong>📂 Submitted Files:</strong>
+                    <ul>
+                        {% for f in submission.files.all %}
+                            <li>
+                                <a href="{{ f.file.url }}" target="_blank">
+                                    📄 {{ f.file.name|cut:"submissions/" }}
+                                </a>
+                            </li>
+                        {% empty %}
+                            <li>No files uploaded</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="card" style="margin-top:15px;">
+            <p style="color:#aaa;">No submissions yet.</p>
         </div>
-    {% endfor %}
-{% else %}
-    <p>No submissions yet.</p>
-{% endif %}
+    {% endif %}
+
+</div>
+
 {% endblock %}

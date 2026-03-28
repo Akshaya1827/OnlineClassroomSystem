@@ -66,9 +66,11 @@ function toggleTodo() {
 {% elif user.role == "teacher" %}
     <a href="{% url 'teacher_dashboard' %}">🏠 Home</a>
 {% endif %}
+{% if user.role == "student" %}
 <div class="sidebar-item" onclick="toggleTodo()">
     📝 To Do 
 </div>
+{% endif %}
 
 <div id="todoDropdown" class="todo-dropdown">
 

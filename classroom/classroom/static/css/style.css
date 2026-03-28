@@ -478,7 +478,6 @@ a {
     text-decoration: none;
     transition: 0.3s;
 }
-
 /* HOVER */
 .top-fab:hover {
     background: #0097e6;
@@ -796,6 +795,7 @@ a {
 
 .btn-primary:hover {
     transform: translateY(-2px);
+    background: #0097e6;
 }
 
 /* SECONDARY BUTTON */
