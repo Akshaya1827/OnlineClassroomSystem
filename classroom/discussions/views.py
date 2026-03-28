@@ -25,7 +25,7 @@ def doubt_box(request, course_id):
     elif request.user != course.teacher:
         return redirect('teacher_dashboard')
 
-    messages = DoubtMessage.objects.filter(course=course).order_by('timestamp')
+    doubts = DoubtMessage.objects.filter(course=course).order_by('timestamp')
 
     if request.method == "POST":
         text = request.POST.get('message')
@@ -41,5 +41,5 @@ def doubt_box(request, course_id):
 
     return render(request, 'doubts/doubt_box.html', {
         'course': course,
-        'messages': messages
+        'doubts': doubts
     })

@@ -9,7 +9,7 @@
     </div>
 
     <div class="chat-box" id="chatBox">
-        {% for msg in messages %}
+        {% for msg in doubts %}
             <div class="chat-message {% if msg.sender == request.user %}my-msg{% else %}other-msg{% endif %}">
                 
                 <div class="msg-header">
@@ -21,13 +21,22 @@
                 </div>
 
             </div>
+        {% empty %}
+            <p class="empty">No doubts yet.</p>
         {% endfor %}
     </div>
 
     <!-- INPUT -->
-    <form id="chatForm" class="chat-input">
+    <form method="POST" class="chat-input-box">
         {% csrf_token %}
-        <input type="text" id="messageInput" placeholder="Type your doubt..." required>
+
+        <input 
+            type="text" 
+            name="message" 
+            placeholder="Type your doubt..." 
+            required
+        >
+
         <button type="submit">Send</button>
     </form>
 
