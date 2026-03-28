@@ -271,6 +271,7 @@ a {
     overflow: hidden;
     box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
     background: #353b48;
+    
 }
 
 /* LEFT SIDE */
@@ -279,7 +280,26 @@ a {
     background: url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f") center/cover;
     position: relative;
 }
+.auth-card{
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 100%;
+    max-height: 80vh;   /* limits height */
+    overflow-y: auto;   /* enables vertical scroll */
+    padding-right: 10px; /* prevents scrollbar overlap */
 
+}
+/* Optional scrollbar styling */
+.auth-card::-webkit-scrollbar {
+    width: 6px;
+}
+
+.auth-card::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
 /* OVERLAY */
 .overlay {
     position: absolute;

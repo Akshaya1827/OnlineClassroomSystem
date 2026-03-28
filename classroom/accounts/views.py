@@ -7,15 +7,18 @@ from django.http import HttpResponseForbidden
 from .forms import RegisterForm
 from django.contrib import messages
 def register(request):
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
+    form = RegisterForm(request.POST or None)
+
+    if request.method == "POST":
         if form.is_valid():
             user = form.save()
-        else:
-            return render(request, 'accounts/register.html', {'form': form})
-            role=request.POST['role']
-    return render(request, 'accounts/register.html')
-# Create your views here.
+            print("✅ SAVED:", user.username)
+            return redirect('login')
+        else:       
+            print("ERRORS:", form.errors)  # 👈 SEE THIS IN TERMINAL
+
+
+    return render(request, 'accounts/register.html', {'form': form})
 def user_login(request):
     if request.method == 'POST':
 
